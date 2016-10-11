@@ -8,12 +8,29 @@ function updateChat() {
     var textArea = document.getElementById('chat');
     textArea.value += addedText;
     textArea.scrollTop = textArea.scrollHeight;
-	
+    
     return addedText;
+}
+
+function loadChat() {
+    $.ajax({
+        url: 'app.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(messages) {
+            var textArea = document.getElementById('chat');
+            textArea.value = '';
+            for (var i = 0; i < messages.length; i++) {
+                textArea.value += messages[i];
+            }
+        }
+    });
 }
 
 function sendForm(form, event) {
     event.preventDefault();
     var addedText = updateChat();
-    $.post('index.php',{addedText:addedText});
+    $.post('app.php', {addedText:addedText});
 }
+
+loadChat();

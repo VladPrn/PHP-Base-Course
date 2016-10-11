@@ -30,15 +30,7 @@
                     <button class="btn btn-default middle__content__btn" id="send">Send</button>
                 </form>
                 <div class="form-group">
-                  <textarea class="form-control middle__content__chat" rows="5" id="chat" readonly><?php
-                    $db = fopen("DataBase.txt","r");
-					if ($db != 0) {
-                        while(!feof($db)) {
-                            echo fgets($db);
-                        }
-                        fclose($db);
-					}
-                  ?></textarea>
+                  <textarea class="form-control middle__content__chat" rows="5" id="chat" readonly></textarea>
                 </div>
             </div>
         </div>
@@ -48,11 +40,3 @@
         <script src="./Resources/js/chat.js"></script>
     </body>
 </html>
-
-<?php
-    if (isset($_POST['addedText'])) {
-        $db = fopen("DataBase.txt","a+");
-        fwrite($db, $_POST['addedText']);
-        fclose($db);
-    }
-?>
