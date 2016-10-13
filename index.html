@@ -18,7 +18,7 @@
 
         <div class="middle">
             <div class="middle__content">
-                <form onsubmit="sendForm(this, event)">                
+                <form onsubmit="sendForm(event)">                
                     <div class="form-group">
                       <label for="usr">Name:</label>
                       <input type="text" class="form-control middle__content__user" id="usr" placeholder="Nickname" maxlength="16" pattern="[A-Za-z]{1,20}" required>
@@ -30,7 +30,9 @@
                     <button class="btn btn-default middle__content__btn" id="send">Send</button>
                 </form>
                 <div class="form-group">
-                  <textarea class="form-control middle__content__chat" rows="5" id="chat" readonly></textarea>
+                    <div class="form-control middle__content__chat">
+                        <div id="chat"></div>
+                    </div>
                 </div>
             </div>
         </div>

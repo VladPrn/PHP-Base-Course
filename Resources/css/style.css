@@ -72,3 +72,28 @@ body {
     margin-top: 40px;
     height: 470px !important;
 }
+
+.admin_name {
+    background: red;
+    display: inline-block;
+    color: #fff;
+}
+
+.admin_text {
+    color: #444;
+    font-size: 16px;
+    text-decoration: underline;
+}
+
+.chat_message {
+    position: relative;
+    margin-bottom: 3px;
+}
+
+.chat_time{
+    color: #444;
+    font-size: 12px;
+    float: right;
+    padding: 4px 0 0 0;
+    display: inline-block;
+}

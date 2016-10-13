@@ -1,36 +1,48 @@
-function updateChat() {
-    var nickName = document.getElementById('usr').value;
-    var message = document.getElementById('msg').value;
-    var date = new Date().toLocaleString();
-    
-    var addedText = date + ' ' + nickName + '> ' + message + '\n';
-    
-    var textArea = document.getElementById('chat');
-    textArea.value += addedText;
-    textArea.scrollTop = textArea.scrollHeight;
-    
-    return addedText;
-}
-
-function loadChat() {
+function updateChat(isPost) {
     $.ajax({
         url: 'app.php',
         type: 'GET',
         dataType: 'json',
-        success: function(messages) {
-            var textArea = document.getElementById('chat');
-            textArea.value = '';
-            for (var i = 0; i < messages.length; i++) {
-                textArea.value += messages[i];
+        success: function(data) {
+            var $chat = $('#chat'),
+                messages = [];
+            for (var i = 0; i < data.length; i++) {
+                var date = '<span class="chat_time">' + data[i].date + '</span>',
+                    name = data[i].name,
+                    text =  data[i].text;
+                messages.push('<div class="chat_message">' + date + ' ' + name + ' > ' + text + '</div>');
             }
+
+            $chat.html(messages.join(''));
+            $chat.parent().scrollTop($chat.height() + 100);
+
+            if (isPost != true)
+            {
+                setTimeout('updateChat(false)', 2000);
+            }
+        },
+        error: function(xhr) {
+            alert(xhr.responseText);
         }
     });
 }
 
-function sendForm(form, event) {
+function sendForm(event) {
     event.preventDefault();
-    var addedText = updateChat();
-    $.post('app.php', {addedText:addedText});
+    var name = $('#usr').val();
+    var text = $('#msg').val();
+    var date = new Date().toLocaleString();
+    $.ajax({
+        url: 'app.php',
+        type: 'POST',
+        data: {message:{name:name, text:text, date:date}},
+        success: function() {
+            updateChat(true);
+        },
+        error: function(xhr) {
+            alert(xhr.responseText);
+        }
+    });
 }
 
-loadChat();
+updateChat(false);
