@@ -2,9 +2,9 @@
 //Класс сообщения обычного пользователя
 class Message implements IMessage {
     private $errors = array();
-    public $name;
-    public $text;
-    public $date;
+    protected $name;
+    protected $text;
+    protected $date;
 
     //Конструктор
     public function __construct($message, $fromPost) {
