@@ -1,19 +1,19 @@
 <?php
 class Application {
-	//Конструктор
+    //Конструктор
     public function __construct($config) {
         foreach ($config as $i => $value) {
             define($i, $value);
         }
     }
 
-	//Запуск программы
+    //Запуск программы
     public function run() {
         if (isset($_POST['message'])) {
             $message = MessageFactory::createMessage($_POST['message']);
             if (!$message->validate() || !$this->saveMessage($message)) {
                 $this->returnErrors($message->getErrors());
-				$this->writeErrorToLog($message->getErrors());
+                $this->writeErrorToLog($message->getErrors());
             } 
         } else {
             $messages = $this->readMessages();
@@ -21,7 +21,7 @@ class Application {
         }
     }
     
-	//Сохранить новое сообщение
+    //Сохранить новое сообщение
     private function saveMessage($message) {
         $messages = $this->readMessages();
         if ($messages == -1) {
@@ -31,7 +31,7 @@ class Application {
         return file_put_contents(DATA_FILE, serialize($this->convertMessagesToArrays($messages))) == true;
     }
     
-	//Прочитать сообщение
+    //Прочитать сообщение
     private function readMessages() {
         $messages;
         if (file_exists(DATA_FILE)) {
@@ -43,14 +43,14 @@ class Application {
         }
     }
     
-	//Отправить сообщения клиенту
+    //Отправить сообщения клиенту
     private function sendMessages($messages) {
         header('Content-Type: application/json');
         $data = $this->convertMessagesToArrays($messages);
         echo json_encode($data);
     }
     
-	//Преобразовть сообщение в вид для хранения в файле 
+    //Преобразовть сообщение в вид для хранения в файле 
     private function convertMessagesToArrays($messages) {
         for ($i = 0; $i < count($messages); $i++) {
             $messages[$i] = $messages[$i]->toArray();
@@ -58,7 +58,7 @@ class Application {
         return $messages;
     }
     
-	//Преобразовть сообщение из вида для хранения в файле 
+    //Преобразовть сообщение из вида для хранения в файле 
     private function convertMessagesFromArrays($arrays) {
         for ($i = 0; $i < count($arrays); $i++) {
             $arrays[$i] = MessageFactory::createMessage($arrays[$i]);
@@ -66,13 +66,13 @@ class Application {
         return $arrays;
     }
     
-	//Вернуть ошибку клиенту
+    //Вернуть ошибку клиенту
     private function returnErrors($errors) {
         header('HTTP/1.1 400 Bad Request');
         echo implode("\n", $errors);
     }
     
-	//Записать ошибку в лог
+    //Записать ошибку в лог
     private function writeErrorToLog($error) {
         $err = fopen(DATA_ERROR, 'a');
         fwrite($err, $error . PHP_EOL);

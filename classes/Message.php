@@ -6,19 +6,19 @@ class Message implements IMessage {
     public $text;
     public $date;
 
-	//Конструктор
-    public function __construct($message) {
+    //Конструктор
+    public function __construct($message, $fromPost) {
         $this->name = $message['name'];
         $this->text = $message['text'];
         $this->date = isset($message['date']) ? $message['date'] : time();
     }
 
-	//Получить массив ошибок
+    //Получить массив ошибок
     public function getErrors() {
         return $this->errors;
     }
 
-	//Проверить на ошибки
+    //Проверить на ошибки
     public function validate() {
         if (empty($this->name)) {
             $this->errors['name'] = 'Не заполнено имя';
@@ -29,17 +29,17 @@ class Message implements IMessage {
         return count($this->errors) == 0;
     }
 
-	//Получить имя пользователя
+    //Получить имя пользователя
     public function getName() {
         return $this->name;
     }
 
-	//Получить текстовое сообщение пользователя
+    //Получить текстовое сообщение пользователя
     public function getText() {
         return $this->text;
     }
 
-	//Преобразовть к массиву
+    //Преобразовть к массиву
     public function toArray() {
         $arr = array();
         $arr['date'] = $this->date;
