@@ -11,12 +11,16 @@ class Application {
     public function run() {
         if (isset($_POST['message'])) {
             $message = MessageFactory::createMessage($_POST['message']);
-            if (!$message->validate() || !$this->saveMessage($message)) {
+            ChatBd::connect();
+            if (!$message->validate() || ChatBd::saveMessage($message)) {
                 $this->returnErrors($message->getErrors());
                 $this->writeErrorToLog($message->getErrors());
             } 
+            ChatBd::close();
         } else {
-            $messages = $this->readMessages();
+            ChatBd::connect();
+            $messages = ChatBd::readMessages();
+            ChatBd::close();
             $this->sendMessages($messages);
         }
     }
@@ -29,18 +33,6 @@ class Application {
         }
         $messages[] = $message;
         return file_put_contents(DATA_FILE, serialize($this->convertMessagesToArrays($messages))) == true;
-    }
-    
-    //Прочитать сообщение
-    private function readMessages() {
-        $messages;
-        if (file_exists(DATA_FILE)) {
-            $messages = $this->convertMessagesFromArrays(unserialize(file_get_contents(DATA_FILE)));
-            return $messages;
-        } else {
-            $this->writeErrorToLog('Can\'not find data file!');
-            return array();
-        }
     }
     
     //Отправить сообщения клиенту

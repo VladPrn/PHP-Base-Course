@@ -38,13 +38,28 @@ class Message implements IMessage {
     public function getText() {
         return $this->text;
     }
+    
+    //Получить дату отправления
+    public function getDate() {
+        return $this->date;
+    }
+
+    //Получить имя пользователя (html-код)
+    public function getHtmlName() {
+        return $this->name;
+    }
+    
+    //Получить текстовое сообщение пользователя (html-код)
+    public function getHtmlText() {
+        return $this->text;
+    }
 
     //Преобразовть к массиву
     public function toArray() {
         $arr = array();
         $arr['date'] = $this->date;
-        $arr['name'] = $this->getName();
-        $arr['text'] = $this->getText();
+        $arr['name'] = $this->getHtmlName();
+        $arr['text'] = $this->getHtmlText();
         return $arr;
     }
 }

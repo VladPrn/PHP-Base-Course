@@ -7,6 +7,15 @@ interface IMessage {
     //Получить текстовое сообщение пользователя
     public function getText();
     
+    //Получить дату отправления
+    public function getDate();
+    
+    //Получить имя пользователя (html-код)
+    public function getHtmlName();
+    
+    //Получить текстовое сообщение пользователя (html-код)
+    public function getHtmlText();
+    
     //Проверить на ошибки
     public function validate();
     
