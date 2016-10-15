@@ -7,7 +7,7 @@ class ChatBd {
     //Подключиться к базе данных
    public static function connect() {
         $dsn = "mysql:host=localhost;dbname=chatbd;charset=utf8";
-        $user = "root";
+        $user = "chatuser";
         $pass = "55555"; 
         self::$pdo = new PDO($dsn, $user, $pass);
    }
