@@ -11,28 +11,16 @@ class Application {
     public function run() {
         if (isset($_POST['message'])) {
             $message = MessageFactory::createMessage($_POST['message']);
-            ChatBd::connect();
-            if (!$message->validate() || ChatBd::saveMessage($message)) {
+            $bd = new ChatBd(BD_URL, BD_NAME, BD_USER, BD_PASS);
+            if (!$message->validate() || $bd->saveMessage($message)) {
                 $this->returnErrors($message->getErrors());
                 $this->writeErrorToLog($message->getErrors());
-            } 
-            ChatBd::close();
+            }
         } else {
-            ChatBd::connect();
-            $messages = ChatBd::readMessages();
-            ChatBd::close();
+            $bd = new ChatBd(BD_URL, BD_NAME, BD_USER, BD_PASS);
+            $messages = $bd->readMessages();
             $this->sendMessages($messages);
         }
-    }
-    
-    //Сохранить новое сообщение
-    private function saveMessage($message) {
-        $messages = $this->readMessages();
-        if ($messages == -1) {
-            $messages = array();
-        }
-        $messages[] = $message;
-        return file_put_contents(DATA_FILE, serialize($this->convertMessagesToArrays($messages))) == true;
     }
     
     //Отправить сообщения клиенту
